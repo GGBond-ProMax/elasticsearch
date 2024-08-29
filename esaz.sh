@@ -1,6 +1,6 @@
 #!/bin/bash
 # Elasticsearch Installation Script
-
+# asdasdsadasd
 # 定义变量
 path="/wget/es"
 es_version="7.17.14"
