@@ -2,7 +2,7 @@
 # Elasticsearch Installation Script
 
 # 定义变量
-path="/wget/es"
+path="/usr/local/es"
 es_version="7.17.14"
 es_tar="elasticsearch-${es_version}-linux-x86_64.tar.gz"
 es_dir="elasticsearch-${es_version}"
@@ -19,6 +19,7 @@ fi
 
 # 进入目录
 cd "$path" || { echo "无法进入目录 $path"; exit 1; }
+pwd
 
 # 下载Elasticsearch
 wget "https://artifacts.elastic.co/downloads/elasticsearch/${es_tar}"
@@ -45,8 +46,8 @@ fi
 cat <<EOL > config/elasticsearch.yml
 cluster.name: test-elasticsearch
 node.name: es-node1
-path.data: /wget/es/elasticsearch-7.17.14/data
-path.logs: /wget/es/elasticsearch-7.17.14/logs
+path.data: /"$path"/elasticsearch-7.17.14/data
+path.logs: /"$path"/elasticsearch-7.17.14/logs
 network.host: 0.0.0.0
 http.port: 9200
 cluster.initial_master_nodes: ["es-node1"]
@@ -58,10 +59,6 @@ EOL
 if ! id -u es &>/dev/null; then
     useradd es
 fi
-
-# 重启es，初始化密码
-systemctl restart elasticsearch
-./bin/elasticsearch-setup-passwords interactive
 
 # 赋予es用户权限
 chown -R es:es "$path"
@@ -77,8 +74,8 @@ After=network-online.target
 [Service]
 User=es
 Group=es
-Environment="ES_HOME=/wget/es/elasticsearch-7.17.14"
-ExecStart=/wget/es/elasticsearch-7.17.14/bin/elasticsearch
+Environment="ES_HOME=/"$path"/elasticsearch-7.17.14"
+ExecStart=/"$path"/elasticsearch-7.17.14/bin/elasticsearch
 Restart=always
 LimitNOFILE=65535
 LimitNPROC=4096
