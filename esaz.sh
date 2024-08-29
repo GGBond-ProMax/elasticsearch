@@ -59,6 +59,10 @@ if ! id -u es &>/dev/null; then
     useradd es
 fi
 
+# 重启es，初始化密码
+./bin/elasticsearch -d
+./bin/elasticsearch-setup-passwords interactive
+
 # 赋予es用户权限
 chown -R es:es "$path"
 
