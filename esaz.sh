@@ -60,7 +60,7 @@ if ! id -u es &>/dev/null; then
 fi
 
 # 重启es，初始化密码
-./bin/elasticsearch -d
+systemctl restart elasticsearch
 ./bin/elasticsearch-setup-passwords interactive
 
 # 赋予es用户权限
