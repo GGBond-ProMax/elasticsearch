@@ -50,8 +50,8 @@ path.logs: /wget/es/elasticsearch-7.17.14/logs
 network.host: 0.0.0.0
 http.port: 9200
 cluster.initial_master_nodes: ["es-node1"]
-# xpack.security.enabled: true
-# xpack.security.transport.ssl.enabled: true
+xpack.security.enabled: true
+xpack.security.transport.ssl.enabled: true
 EOL
 
 # 创建es用户（如果不存在）
