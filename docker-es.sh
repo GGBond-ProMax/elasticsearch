@@ -9,22 +9,18 @@ CONFIG_DIR="${ES_DATADIR}/config"
 DATA_DIR="${ES_DATADIR}/data"
 LOGS_DIR="${ES_DATADIR}/logs"
 
-# 定义配置仓库 URL 和本地克隆目录
-CONFIG_REPO="https://github.com/GGBond-ProMax/config.git"
+# 复制当前目录下的 config 文件夹到目标目录
+echo "将当前目录下的配置文件移动到 $CONFIG_DIR..."
+if [ -d "./config" ]; then
+    mv ./config "$ES_DATADIR"
+else
+    echo "当前目录下没有找到 config 目录。"
+    exit 1
+fi
 
 # 检查是否已安装 Docker
 if ! command -v docker &> /dev/null; then
     echo "Docker 未安装，请先安装 Docker。"
-    exit 1
-fi
-
-# 克隆配置仓库
-echo "克隆配置仓库 ${CONFIG_REPO}..."
-git clone "$CONFIG_REPO"
-
-# 检查克隆是否成功
-if [ $? -ne 0 ]; then
-    echo "克隆配置仓库失败，请检查 URL 或网络连接。"
     exit 1
 fi
 
@@ -53,10 +49,6 @@ if [ ! -d "$LOGS_DIR" ]; then
     echo "创建日志目录: $LOGS_DIR"
     mkdir -p "$LOGS_DIR"
 fi
-
-# 删除克隆的配置仓库
-echo "删除克隆的配置仓库..."
-rm -rf config/
 
 # 拉取 Elasticsearch 镜像
 echo "拉取 Elasticsearch 镜像 ${ELASTICSEARCH_IMAGE}..."
